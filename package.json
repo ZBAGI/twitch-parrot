@@ -2,10 +2,10 @@
   "name": "twitch-parrot",
   "version": "1.0.0",
   "description": "",
-  "main": "/dist/index.js",
+  "main": "./index.js",
   "scripts": {
     "build": "tsc",
-    "serve": "concurrently \"tsc -w\" \"nodemon dist/index.js\""
+    "serve": "nodemon"
   },
   "repository": {
     "type": "git",
@@ -18,9 +18,14 @@
   },
   "homepage": "https://github.com/ZBAGI/twitch-parrot#readme",
   "devDependencies": {
-    "concurrently": "^8.2.2",
     "eslint": "^8.48.0",
-    "nodemon": "^3.0.3",
-    "typescript": "^5.1.6"
+    "nodemon": "^3.0.3"
+  },
+  "dependencies": {
+    "async-mutex": "^0.4.1",
+    "dotenv": "^16.4.2",
+    "elevenlabs-node": "^2.0.3",
+    "sound-play": "^1.1.0",
+    "twitch-js": "^2.0.0-beta.45"
   }
 }

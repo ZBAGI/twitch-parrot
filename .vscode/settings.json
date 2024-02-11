@@ -1,0 +1,17 @@
+{
+    "files.exclude": {
+        ".gitignore": true,
+		".vscode": true,
+		".npmrc": true,
+		"package-lock.json": true,
+		"node_modules": true
+	},
+	"editor.renderWhitespace": "boundary",
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": false,
+    "editor.tabSize": 4,
+	"importSorter.generalConfiguration.sortOnBeforeSave": true,
+	"importSorter.importStringConfiguration.quoteMark": "double",
+	"importSorter.sortConfiguration.removeUnusedDefaultImports": true,
+	"importSorter.sortConfiguration.removeUnusedImports": true,
+}
