@@ -1,8 +1,16 @@
+const onError = (e) => {
+	console.error("There was an uncaught error", e);
+	console.error("PARROT DIED :(");
+	process.stdin.setRawMode(true);
+    process.stdin.resume();
+};
+process.on("uncaughtException", onError);
+
 require("dotenv").config();
 const elevenLabs = require("elevenlabs-node");
 const sound = require("sound-play");
 const twitch = require("twitch-js");
-const { Mutex } = require('async-mutex');
+const { Mutex } = require("async-mutex");
 
 const username = process.env.USERNAME;
 const token = process.env.TWITCH_TOKEN;
@@ -15,7 +23,7 @@ const volume = !process.env.VOLUME ? 1 : Number.parseFloat(process.env.VOLUME);
 const maxLength = !process.env.MAX_LENGTH ? 200 : Number.parseInt(process.env.MAX_LENGTH);
 
 if(!username || !apiKey || !token)
-	throw new Error("Missing configuration.");
+	throw new Error("Missing configuration file '.env'");
 
 const voice = new elevenLabs({
 	apiKey
@@ -23,6 +31,9 @@ const voice = new elevenLabs({
 const chat = new twitch.Chat({
 	username,
 	token,
+	log: {
+		level: "warn"
+	}
 });
 
 const lastMsg = {};
@@ -31,25 +42,30 @@ const lock = new Mutex();
 (async () => {
 	await chat.connect();
 	await chat.join(username);
-
+	console.log("Parrot is now listening...");
 	chat.on("PRIVMSG", async (event) => {
 		if(!event.message.startsWith(command))
 			return;
 
-		const msg = event.message.substring(command.length);
+		const msg = event.message.substring(command.length).trim();
 
-		if(maxLength && msg.length > maxLength)
+		if(maxLength && msg.length > maxLength) {
+			console.log("ignoring " + event.username + " due to message length.");
 			return;
+		}
 
 		const thisUsrLastMsg = lastMsg[event.username];
 		if(thisUsrLastMsg) {
 			const secAgo = ((new Date).getTime() - thisUsrLastMsg.getTime()) / 1000;
-			if(secAgo <= cooldown)
+			if(secAgo <= cooldown) {
+				console.log("ignoring " + event.username + " due to cool-down period.");
 				return;
+			}
 		}
 
 		const release = await lock.acquire();
 		try {
+			console.log(event.username + " said " + msg);
 			lastMsg[event.username] = new Date();
 			await Promise.all([
 				voice.textToSpeech({
@@ -71,4 +87,4 @@ const lock = new Mutex();
 			release();
 		}
 	});
-})();
+})().catch(onError);

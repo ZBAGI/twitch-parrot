@@ -1,0 +1,9 @@
+USERNAME=your_twitch_username_here
+TWITCH_TOKEN=twitch_token_here
+ELEVENLABS_APIKEY=elevenlabs_api_key_here
+COMMAND=!say
+VOLUME=1
+MAX_LENGTH=0
+COOLDOWN=60
+MSG_VOICE_ID=pNInz6obpgDQGcFmaJgB
+USR_VOICE_ID=pNInz6obpgDQGcFmaJgB
