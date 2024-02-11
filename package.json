@@ -1,0 +1,26 @@
+{
+  "name": "twitch-parrot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "/dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "serve": "concurrently \"tsc -w\" \"nodemon dist/index.js\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZBAGI/twitch-parrot.git"
+  },
+  "author": "ZBAGI",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ZBAGI/twitch-parrot/issues"
+  },
+  "homepage": "https://github.com/ZBAGI/twitch-parrot#readme",
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "eslint": "^8.48.0",
+    "nodemon": "^3.0.3",
+    "typescript": "^5.1.6"
+  }
+}
