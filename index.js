@@ -1,5 +1,5 @@
 const onError = (e) => {
-	console.error("There was an uncaught error", e);
+	console.error(e);
 	console.error("PARROT DIED :(");
 	process.stdin.setRawMode(true);
     process.stdin.resume();
@@ -40,6 +40,12 @@ ws.on("open", function open() {
 });
 
 ws.on("message", async (data) => {
+	if (data.startsWith("PING")) {
+		ws.send("PONG :tmi.twitch.tv");
+		console.log("Parrot is still listening");
+		return;
+	}
+
 	if (!data.includes("PRIVMSG"))
 		return;
 
@@ -92,3 +98,6 @@ ws.on("message", async (data) => {
 		release();
 	}
 });
+
+ws.on("error", onError);
+ws.on("close", onError);
