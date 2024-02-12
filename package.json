@@ -1,8 +1,23 @@
 {
 	"name": "twitch-parrot",
 	"version": "1.0.0",
-	"description": "TTS parrot for twitch that utilizes elevenlabs.",
+	"description": "Twitch-Parrot is a Node.js based Twitch chat bot that leverages ElevenLabs' API for real-time text-to-speech (TTS) functionalities, enabling interactive and engaging live streams. It supports customizable commands, voice selection, and user interaction controls.",
 	"main": "./index.js",
+	"keywords": [
+		"twitch",
+		"twitch-bot",
+		"text-to-speech",
+		"tts",
+		"elevenlabs",
+		"streaming",
+		"chat-bot",
+		"live-streaming",
+		"voice-generation",
+		"twitch-chat",
+		"twitch-api",
+		"nodejs",
+		"javascript"
+	],
 	"scripts": {
 		"pack": "ncc build index.js -o dist",
 		"build": "npm run pack && pkg --targets node14-win-x64,node14-macos-x64,node14-linux-x64 --output ./dist/twitch-parrot dist/index.js && cp env_template ./dist/.env",
