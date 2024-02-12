@@ -43,6 +43,6 @@
 		"dotenv": "^16.4.2",
 		"elevenlabs-node": "^2.0.3",
 		"sound-play": "^1.1.0",
-		"twitch-js": "^2.0.0-beta.45"
+		"ws": "^8.16.0"
 	}
 }

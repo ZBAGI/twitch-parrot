@@ -17,8 +17,7 @@ Twitch-Parrot is a Node.js application designed to bring live text-to-speech (TT
 3. Edit the `.env` file using a text editor of your choice and configure the following settings:
 
 ```env
-USERNAME=your_twitch_username_here
-TWITCH_TOKEN=twitch_token_here
+TWITCH_CHANNEL=twitch_channel_you_want_to_listening_to
 ELEVENLABS_APIKEY=elevenlabs_api_key_here
 COMMAND=!say
 VOLUME=1
@@ -27,15 +26,7 @@ COOLDOWN=60
 MSG_VOICE_ID=pNInz6obpgDQGcFmaJgB
 USR_VOICE_ID=pNInz6obpgDQGcFmaJgB
 ```
-- **USERNAME:** Your Twitch username.
-- **TWITCH_TOKEN:** Token with chat read access. To generate one, follow these steps:
-    1. Go to [TwitchTokenGenerator.com](https://twitchtokengenerator.com/).
-    2. Select "Bot Chat Token".
-    3. Click "Authorize".
-    4. In the "Available Token Scopes", ensure "chat:read" is set to "yes".
-    5. Scroll down and click "Generate Token!".
-    6. Choose "Authorize" again if prompted.
-    7. Copy the "ACCESS TOKEN" provided and paste it into the `.env` file.
+- **TWITCH_CHANNEL:** Twitch username.
 - **ELEVENLABS_APIKEY:** Your ElevenLabs API key, required for voice generation. To obtain your API key, follow these steps:
     1. Visit [ElevenLabs](https://elevenlabs.io/) and log in to your account.
     2. Click on your profile picture in the left bottom corner of the page.

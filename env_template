@@ -1,5 +1,4 @@
-USERNAME=your_twitch_username_here
-TWITCH_TOKEN=twitch_token_here
+TWITCH_CHANNEL=twitch_channel_you_want_to_listening_to
 ELEVENLABS_APIKEY=elevenlabs_api_key_here
 COMMAND=!say
 VOLUME=1
