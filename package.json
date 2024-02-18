@@ -27,7 +27,7 @@
 			"latest-win-x64"
 		],
 		"assets": [
-			"./node_modules/speaker/**/*"
+			"./node_modules/speaker/build/**/*"
 		],
 		"outputPath": "./dist/release"
 	},
