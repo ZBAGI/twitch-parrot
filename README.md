@@ -11,7 +11,7 @@ Twitch-Parrot is a Node.js application designed to bring live text-to-speech (TT
 
 ## Getting Started
 
-1. Download the latest build from [Twitch-Parrot Releases](https://github.com/ZBAGI/twitch-parrot/releases/download/2.0.0/dist.zip).
+1. Download the latest build from [Twitch-Parrot Releases](https://github.com/ZBAGI/twitch-parrot/releases/download/2.0.1/dist.zip).
 2. Unzip the downloaded file to your preferred location.
 3. Edit the `.env` file using a text editor of your choice.
 
