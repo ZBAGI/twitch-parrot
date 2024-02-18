@@ -38,7 +38,11 @@ You can monitor your character usage on the [AWS Billing and Cost Management, Bu
   - Name it as you wish.
   - Do not check `rovide user access to the AWS Management Console`.
   - Click `Next`
-  - Click `Next` (no need to change permissions).
+  - Click `Create Group`
+  - Search for `AmazonPollyFullAccess` and check box next to it.
+  - Name `User group name` ( as you wish, for example. `Polly administrator` )
+  - Click `Create user group`
+  - Select group you just created ( check box next to it )
   - Click `Create user`
 5. Click on the name of the user you just created.
 6. Select `Security credentials` tab.
