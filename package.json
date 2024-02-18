@@ -2,7 +2,6 @@
 	"name": "twitch-parrot",
 	"version": "1.0.0",
 	"description": "Twitch-Parrot is a Node.js based Twitch chat bot that leverages AWS Polly API for real-time text-to-speech (TTS) functionalities, enabling interactive and engaging live streams. It supports customizable commands, voice selection, and user interaction controls.",
-	"main": "./dist/index.js",
 	"keywords": [
 		"twitch",
 		"twitch-bot",
@@ -20,10 +19,20 @@
 		"nodejs",
 		"javascript"
 	],
+	"bin": "./dist/index.js",
+	"pkg": {
+		"targets": [
+			"latest-linux-x64",
+			"latest-macos-x64",
+			"latest-win-x64"
+		],
+		"assets": [
+			"./node_modules/speaker/**/*"
+		],
+		"outputPath": "./dist/release"
+	},
 	"scripts": {
-		"pack": "ncc build ./dist/index.js -o dist",
-		"compile": "tsc",
-		"build": "npm run compile && npm run pack && pkg --targets node14-win-x64,node14-macos-x64,node14-linux-x64 --output ./dist/twitch-parrot dist/index.js && cp env_template ./dist/.env",
+		"build": "tsc && pkg . && cp env_template ./dist/release/.env",
 		"serve": "nodemon"
 	},
 	"repository": {
@@ -37,13 +46,13 @@
 	},
 	"homepage": "https://github.com/ZBAGI/twitch-parrot#readme",
 	"devDependencies": {
-		"@types/node": "^20.5.1",
+		"@types/node": "^20.11.19",
 		"@types/ws": "^8.5.10",
 		"nodemon": "^3.0.3",
 		"pkg": "^5.8.1",
 		"ts-node": "^10.9.2",
 		"typescript": "^5.3.3",
-		"@vercel/ncc": "^0.38.1"
+		"bestzip": "^2.2.1"
 	},
 	"dependencies": {
 		"@aws-sdk/client-polly": "^3.515.0",
