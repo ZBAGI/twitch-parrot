@@ -12,6 +12,7 @@ Twitch-Parrot is a Node.js application designed to bring live text-to-speech (TT
 ## Pricing
 This project is open-source and can be used for free. AWS Polly's free tier includes 5 million characters per month for speech or Speech Marks requests for the first 12 months, starting from your first request for speech.
 [All current prices for AWS Polly can be found on the AWS website.](https://aws.amazon.com/polly/pricing/)
+You can monitor your character usage on the [AWS Billing and Cost Management, Budgets, and Planning page](https://console.aws.amazon.com/billing/home#/freetier).
 
 ## Getting Started
 
