@@ -1,9 +1,30 @@
 import { config } from "dotenv";
+import { promises as fs } from "fs";
+import { EOL } from "os";
+import path from "path";
 
 import { VoiceId } from "@aws-sdk/client-polly";
 
 import { Chat } from "./chat/chat";
 import { TTS } from "./tts";
+
+process.on("uncaughtException", async (e) => {
+	const dateString = (new Date()).toISOString().replace(/[:T-]/g, "_").split(".")[0];
+	const crashFilename = `crash_${dateString}.txt`;
+  
+	const folderPath = path.join(process.cwd(), "errors");
+	const filePath = path.join(folderPath, crashFilename);
+  
+	try {
+		await fs.mkdir(folderPath, { recursive: true });
+		await fs.writeFile(filePath, `${e.name}${EOL}${e.message}${EOL}${EOL}${e.stack}`);
+	} catch (error) {
+		console.error("Error saving the file:", error);
+	}
+
+	console.error(e);
+	process.stdin.resume();
+});
 
 config();
 
