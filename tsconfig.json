@@ -1,0 +1,33 @@
+{
+	"include": ["src/**/*", "**/*.d.ts"],
+	"exclude": [],
+	"compilerOptions": {
+		"outDir": "./dist",
+		"rootDir": "./src",
+		"baseUrl": ".",
+		
+		/* Basic Options */
+		"target": "ES6",
+		"module": "CommonJS",
+		"removeComments": true,
+		"moduleResolution": "node",
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+		
+		/* Strict Type-Checking Options */
+		"strict": true,
+		"noImplicitAny": true,
+		"strictPropertyInitialization": false,
+		"resolveJsonModule": true,
+		
+		/* Additional Checks */
+		"experimentalDecorators": true,
+		"forceConsistentCasingInFileNames": true,
+		
+		/* Output */
+		"declaration": false,
+		"inlineSourceMap": true,
+		"pretty": true,
+		"emitDecoratorMetadata": true,
+	}
+}

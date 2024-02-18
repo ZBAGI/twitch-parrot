@@ -1,14 +1,16 @@
 {
 	"name": "twitch-parrot",
 	"version": "1.0.0",
-	"description": "Twitch-Parrot is a Node.js based Twitch chat bot that leverages ElevenLabs' API for real-time text-to-speech (TTS) functionalities, enabling interactive and engaging live streams. It supports customizable commands, voice selection, and user interaction controls.",
-	"main": "./index.js",
+	"description": "Twitch-Parrot is a Node.js based Twitch chat bot that leverages AWS Polly API for real-time text-to-speech (TTS) functionalities, enabling interactive and engaging live streams. It supports customizable commands, voice selection, and user interaction controls.",
+	"main": "./dist/index.js",
 	"keywords": [
 		"twitch",
 		"twitch-bot",
 		"text-to-speech",
 		"tts",
-		"elevenlabs",
+		"AWS",
+		"Polly",
+		"AWS-polly",
 		"streaming",
 		"chat-bot",
 		"live-streaming",
@@ -19,8 +21,9 @@
 		"javascript"
 	],
 	"scripts": {
-		"pack": "ncc build index.js -o dist",
-		"build": "npm run pack && pkg --targets node14-win-x64,node14-macos-x64,node14-linux-x64 --output ./dist/twitch-parrot dist/index.js && cp env_template ./dist/.env",
+		"pack": "ncc build ./dist/index.js -o dist",
+		"compile": "tsc",
+		"build": "npm run compile && pkg --targets node14-win-x64,node14-macos-x64,node14-linux-x64 --output ./dist/twitch-parrot dist/index.js && cp env_template ./dist/.env",
 		"serve": "nodemon"
 	},
 	"repository": {
@@ -34,15 +37,18 @@
 	},
 	"homepage": "https://github.com/ZBAGI/twitch-parrot#readme",
 	"devDependencies": {
+		"@types/node": "^20.5.1",
+		"@types/ws": "^8.5.10",
 		"nodemon": "^3.0.3",
 		"pkg": "^5.8.1",
-		"@vercel/ncc": "^0.38.1"
+		"ts-node": "^10.9.2",
+		"typescript": "^5.3.3"
 	},
 	"dependencies": {
+		"@aws-sdk/client-polly": "^3.515.0",
 		"async-mutex": "^0.4.1",
 		"dotenv": "^16.4.2",
-		"elevenlabs-node": "^2.0.3",
-		"sound-play": "^1.1.0",
+		"speaker": "^0.5.4",
 		"ws": "^8.16.0"
 	}
 }
