@@ -7,6 +7,7 @@ import { ChatEvent } from "./chat-event";
 export class Chat {
 	public ws: WebSocket;
 	private event: EventEmitter;
+	private commandLock: Mutex;
 
 	constructor(twitchChannelName: string) {
 		this.event = new EventEmitter();
@@ -48,47 +49,42 @@ export class Chat {
 		this.on("ping", async () => {
 			this.ws.send("PONG :tmi.twitch.tv");
 		});
+
+		this.commandLock = new Mutex();
 	}
 
-	public onCommand(command: string, callback: (username: string, message: string, isModerator: boolean) => Promise<void>, opt?: {
-		queue?: boolean,
-		cooldown?: number,
-		maxLength?: number,
+	public command(opt: {
+		command: string,
+		shouldTrigger: (username: string, message: string, isModerator: boolean) => boolean,
+		onTrigger: (username: string, message: string, isModerator: boolean) => Promise<void>,
+		cooldown?: number
 	}): this {
-		let lock: Mutex | undefined = undefined;
-		if(opt?.queue == true)
-			lock = new Mutex();
-		
 		const lastMessage: { [username: string]: Date } = {};
 			
 		this.on("userMessage", async (username, message, isModerator) => {
-			if(!message.startsWith(command))
+			if(!message.startsWith(opt.command))
 				return;
-			const sanitizedMessage = message.substring(command.length).replace(/ +/g, " ").trim();
+			const sanitizedMessage = message.substring(opt.command.length).replace(/ +/g, " ").trim();
 			
-			if(!isModerator && opt?.maxLength) {
-				if(sanitizedMessage.length > opt.maxLength) {
-					console.log(`Ignoring '${username}' command '${command}' due to message length (${sanitizedMessage.length} characters).`);
-						return;
-				}
-			}
+			if(!opt.shouldTrigger(username, sanitizedMessage, isModerator))
+				return;
 
-			if(!isModerator && opt?.cooldown) {
+			if(!isModerator && opt.cooldown) {
 				const thisUsrLastMsg = lastMessage[username];
 				if(thisUsrLastMsg) {
 					const secAgo = ((new Date).getTime() - thisUsrLastMsg.getTime()) / 1000;
 					const leftSec = opt.cooldown - secAgo;
 					if(leftSec > 0) {
-						console.log(`Ignoring '${username}' command '${command}' due to cool-down period (${leftSec.toFixed(2)} sec left).`);
+						console.log(`Ignoring '${username}' command '${opt.command}' due to cool-down period (${leftSec.toFixed(2)} sec left).`);
 						return;
 					}
 				}
 			}
 
-			const release = lock ? (await lock.acquire()) : undefined;
+			const release = await this.commandLock.acquire();
 			try {
 				lastMessage[username] = new Date();
-				await callback(username, sanitizedMessage, isModerator);
+				await opt.onTrigger(username, sanitizedMessage, isModerator);
 			} finally {
 				if(release)
 					release();
