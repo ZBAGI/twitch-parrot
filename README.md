@@ -16,7 +16,7 @@ You can monitor your character usage on the [AWS Billing and Cost Management, Bu
 
 ## Getting Started
 
-1. Download the latest build from [Twitch-Parrot Releases](https://github.com/ZBAGI/twitch-parrot/releases/download/2.1.0/release.zip).
+1. Download the latest build from [Twitch-Parrot Releases](https://github.com/ZBAGI/twitch-parrot/releases/download/2.2.0/release.zip).
 2. Unzip the downloaded file to your preferred location.
 3. Edit the `.env` file using a text editor of your choice.
 - `AWS_ACCESS_KEY` - Taken from your AWS account, see below for step-by-step instructions.
