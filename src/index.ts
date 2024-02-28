@@ -1,5 +1,5 @@
 import { config } from "dotenv";
-import { existsSync, promises as fs } from "fs";
+import { promises as fs } from "fs";
 import { EOL } from "os";
 import path from "path";
 
@@ -40,10 +40,6 @@ const SAY_DEFAULT_VOICE: VoiceId = (process.env.SAY_DEFAULT_VOICE as VoiceId) ??
 const SAY_COOLDOWN = process.env.SAY_COOLDOWN ? Number.parseInt(process.env.SAY_COOLDOWN) : undefined;
 const SAY_MAX_LENGTH = process.env.SAY_MAX_LENGTH ? Number.parseInt(process.env.SAY_MAX_LENGTH) : undefined;
 
-const PLAY_COMMAND = process.env.PLAY_COMMAND;
-const PLAY_COOLDOWN = process.env.PLAY_COOLDOWN ? Number.parseInt(process.env.PLAY_COOLDOWN) : undefined;
-const PLAY_FOLDER = process.env.PLAY_FOLDER || path.join(process.cwd(), "sounds");
-
 if(!AWS_ACCESS_KEY)
 	throw new Error("Missing AWS_ACCESS_KEY");
 
@@ -81,26 +77,3 @@ chat.command({
 		await audio.say(msg, SAY_DEFAULT_VOICE);
 	}
 });
-
-if(PLAY_COMMAND) {
-	console.log(PLAY_COMMAND + " command enabled and set to '" + PLAY_FOLDER + "' folder");
-
-	const getPlayFilePath = (id: string): string => {
-		return path.join(PLAY_FOLDER, id.replace(/[^a-zA-Z0-9 ]/g, "") + ".wav");
-	}
-
-	chat.command({
-		command: PLAY_COMMAND, 
-		cooldown: PLAY_COOLDOWN,
-		shouldTrigger: (user, message, isModerator) => {
-			if(message.length > 100)
-				return false;
-			return existsSync(getPlayFilePath(message));
-		},
-		onTrigger: async (user, message, isModerator) => {
-			const path = getPlayFilePath(message);
-			console.log((isModerator ? "[MOD] " : "") + `${user} ${PLAY_COMMAND} '${path}'`);
-			await audio.play(path);
-		}
-	});
-}

@@ -32,7 +32,7 @@
 		"outputPath": "./dist/release"
 	},
 	"scripts": {
-		"build": "tsc && pkg . && cp env_template ./dist/release/.env && cp -r sounds ./dist/release/sounds",
+		"build": "tsc && pkg . && cp env_template ./dist/release/.env",
 		"serve": "nodemon"
 	},
 	"repository": {

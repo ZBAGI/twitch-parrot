@@ -1,4 +1,3 @@
-import * as fs from "fs";
 import Speaker from "speaker";
 
 import {
@@ -28,24 +27,5 @@ export class Audio {
 			channels: 1,
 			sampleRate: 16000
 		}));
-	}
-
-	public async play(path: string): Promise<void> {
-		return new Promise<void>((resolve, reject) => {
-			const fileStream = fs.createReadStream(path);
-			fileStream.on('error', (err: Error) => {
-				reject(err);
-			});
-
-			const speaker = new Speaker();
-			speaker.on('close', () => {
-				resolve();
-			});
-			speaker.on('error', (err: Error) => {
-				reject(err);
-			});
-
-			fileStream.pipe(speaker);
-		});
 	}
 }
