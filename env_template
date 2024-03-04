@@ -8,7 +8,3 @@ SAY_DEFAULT_VOICE=Brian
 SAY_CONCAT_TEXT=said
 SAY_COOLDOWN=10
 SAY_MAX_LENGTH=0
-
-# Commend line bellow to disable
-PLAY_COMMAND=!play
-PLAY_COOLDOWN=60
