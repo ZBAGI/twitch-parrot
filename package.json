@@ -48,16 +48,17 @@
 	"devDependencies": {
 		"@types/node": "^20.11.19",
 		"@types/ws": "^8.5.10",
+		"@types/pcm-volume": "^1.0.2",
 		"nodemon": "^3.0.3",
 		"pkg": "^5.8.1",
 		"ts-node": "^10.9.2",
-		"typescript": "^5.3.3",
-		"bestzip": "^2.2.1"
+		"typescript": "^5.3.3"
 	},
 	"dependencies": {
 		"@aws-sdk/client-polly": "^3.515.0",
 		"async-mutex": "^0.4.1",
 		"dotenv": "^16.4.2",
+		"pcm-volume": "^1.0.0",
 		"speaker": "^0.5.4",
 		"ws": "^8.16.0"
 	}

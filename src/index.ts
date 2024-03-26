@@ -34,11 +34,15 @@ const AWS_ACCESS_KEY = process.env.AWS_ACCESS_KEY;
 const AWS_ACCESS_SECRET = process.env.AWS_ACCESS_SECRET;
 const AWS_REGION = process.env.AWS_REGION || "eu-west-1";
 
-const SAY_COMMAND = process.env.SAY_COMMAND || "!say";
+const SAY_COMMAND = process.env.SAY_COMMAND || undefined;
+const SAY_VOLUME = process.env.SAY_VOLUME ? Number.parseInt(process.env.SAY_VOLUME)/100 : 1.0;
 const SAY_CONCAT_TEXT = process.env.SAY_CONCAT_TEXT || "said";
 const SAY_DEFAULT_VOICE: VoiceId = (process.env.SAY_DEFAULT_VOICE as VoiceId) ?? "Brian";
 const SAY_COOLDOWN = process.env.SAY_COOLDOWN ? Number.parseInt(process.env.SAY_COOLDOWN) : undefined;
 const SAY_MAX_LENGTH = process.env.SAY_MAX_LENGTH ? Number.parseInt(process.env.SAY_MAX_LENGTH) : undefined;
+
+if(SAY_VOLUME > 1 || SAY_VOLUME < 0)
+	throw new Error("SAY_VOLUME must be number between 100 and 0");
 
 if(!AWS_ACCESS_KEY)
 	throw new Error("Missing AWS_ACCESS_KEY");
@@ -55,7 +59,7 @@ const audio = new Audio({
 		accessKeyId: AWS_ACCESS_KEY,
 		secretAccessKey: AWS_ACCESS_SECRET
 	}
-});
+}, SAY_VOLUME);
 
 const chat = new Chat(TWITCH_CHANNEL);
 
@@ -65,7 +69,7 @@ chat.command({
 	shouldTrigger: (user, message, isModerator) => {
 		if(!isModerator && SAY_MAX_LENGTH) {
 			if(message.length > SAY_MAX_LENGTH) {
-				console.log(`Ignoring '${user}' command '${SAY_COMMAND}' due to message length (${message.length} characters).`);
+				console.log(`Ignoring TTS of '${user}' due to message length (${message.length} characters).`);
 					return false;
 			}
 		}

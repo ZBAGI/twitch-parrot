@@ -54,7 +54,7 @@ export class Chat {
 	}
 
 	public command(opt: {
-		command: string,
+		command?: string,
 		shouldTrigger: (username: string, message: string, isModerator: boolean) => boolean,
 		onTrigger: (username: string, message: string, isModerator: boolean) => Promise<void>,
 		cooldown?: number
@@ -62,9 +62,10 @@ export class Chat {
 		const lastMessage: { [username: string]: Date } = {};
 			
 		this.on("userMessage", async (username, message, isModerator) => {
-			if(!message.startsWith(opt.command))
+			if(opt.command && !message.startsWith(opt.command))
 				return;
-			const sanitizedMessage = message.substring(opt.command.length).replace(/ +/g, " ").trim();
+
+			const sanitizedMessage = message.substring(opt.command?.length ?? 0).replace(/ +/g, " ").trim();
 			
 			if(!opt.shouldTrigger(username, sanitizedMessage, isModerator))
 				return;
@@ -75,7 +76,7 @@ export class Chat {
 					const secAgo = ((new Date).getTime() - thisUsrLastMsg.getTime()) / 1000;
 					const leftSec = opt.cooldown - secAgo;
 					if(leftSec > 0) {
-						console.log(`Ignoring '${username}' command '${opt.command}' due to cool-down period (${leftSec.toFixed(2)} sec left).`);
+						console.log(`Ignoring '${username}' command '${opt.command ?? "NONE"}' due to cool-down period (${leftSec.toFixed(2)} sec left).`);
 						return;
 					}
 				}
