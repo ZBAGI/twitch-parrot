@@ -80,15 +80,17 @@ chat.command({
 		return !message.startsWith("!") && !message.startsWith("/");
 	},
 	onTrigger: async (user, message, isModerator) => {
-		const userSaid = `${user} ${SAY_CONCAT_TEXT}`;
+		let userSaid = `${user} ${SAY_CONCAT_TEXT}`;
 		console.log((isModerator ? "[MOD] " : "") + userSaid + " " + message);
-
-		const customUserSaidPronunciation = pronunciation.apply(userSaid);
-		const shouldCache = userSaid == customUserSaidPronunciation;
-		await audio.say(customUserSaidPronunciation, SAY_DEFAULT_VOICE, SAY_VOLUME, shouldCache);
 		
 		message = pronunciation.apply(message);
-		await audio.say(message, SAY_DEFAULT_VOICE, SAY_VOLUME);
+		userSaid = pronunciation.apply(userSaid);
+
+		const userSaidStream = await audio.getStream(userSaid, SAY_DEFAULT_VOICE, true);
+		const messageStream = await audio.getStream(message, SAY_DEFAULT_VOICE);
+
+		await audio.play(userSaidStream, SAY_VOLUME);
+		await audio.play(messageStream, SAY_VOLUME);
 	}
 });
 
@@ -118,7 +120,9 @@ if(SAY_COMMAND_PRONOUNCE) {
 			const msg = removed ? "Moderator "+user+" removed pronunciation of; " + args[1] :
 				"Moderator "+user+" changed pronunciation of; " + args[0] + "; to; " + args[1];
 			console.log(msg);
-			await audio.say(msg, SAY_DEFAULT_VOICE, SAY_VOLUME);
+
+			const stream = await audio.getStream(msg, SAY_DEFAULT_VOICE, true);
+			audio.play(stream, SAY_VOLUME);
 		}
 	});
 }

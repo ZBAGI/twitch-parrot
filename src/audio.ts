@@ -1,6 +1,6 @@
 import * as crypto from "crypto";
 import Speaker from "speaker";
-import { Readable } from "stream";
+import { PassThrough, Readable } from "stream";
 
 import {
 	PollyClient, PollyClientConfig, SynthesizeSpeechCommand, VoiceId
@@ -24,21 +24,45 @@ export class Audio {
 		return hash.digest('hex');
 	}
 
-	private async addCache(text: string, voiceId: VoiceId, stream: Readable): Promise<void> {
+	private cloneReadable(original: Readable): [Readable, Readable] {
+		const clone1 = new PassThrough();
+		const clone2 = new PassThrough();
+	
+		original.on("data", chunk => {
+			clone1.write(chunk);
+			clone2.write(chunk);
+		});
+		original.on("end", () => {
+			clone1.end();
+			clone2.end();
+		});
+		original.on("error", err => {
+			clone1.emit("error", err);
+			clone2.emit("error", err);
+		});
+	
+		return [clone1, clone2];
+	}
+
+	private async addCache(text: string, voiceId: VoiceId, stream: Readable): Promise<Readable> {
 		const key = this.getCacheKey(text, voiceId);
 		const data: Buffer[] = [];
-		for await (const chunk of stream) {
+		const streams = this.cloneReadable(stream);
+
+		for await (const chunk of streams[0]) {
 			data.push(chunk as Buffer);
 		}
 		this.cache.set(key, data);
+
+		return streams[1];
 	}
 
 	private getStreamFromCache(text: string, voiceId: VoiceId): Readable | undefined {
 		const key = this.getCacheKey(text, voiceId);
 		const data = this.cache.get(key);
-		if (!data) {
+		if (!data)
 			return undefined;
-		}
+
 		return Readable.from(data);
 	}
 
@@ -46,7 +70,7 @@ export class Audio {
 		return text.replace(/([!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~`])\1+/g, "$1");
 	}
 
-	public async say(text: string, voiceId: VoiceId, volume: number = 1.0, useCache: boolean = false): Promise<void> {
+	public async getStream(text: string, voiceId: VoiceId, useCache: boolean = false): Promise<Readable> { 
 		let stream: Readable | undefined;
 
 		if(useCache)
@@ -54,11 +78,12 @@ export class Audio {
 
 		if(!stream) {
 			stream = await this.getStreamFromRequest(text, voiceId);
+
 			if(useCache)
-				this.addCache(text, voiceId, stream);
+				return this.addCache(text, voiceId, stream);
 		}
 
-		this.play(stream, volume);
+		return stream;
 	}
 
 	private async getStreamFromRequest(text: string, voiceId: VoiceId): Promise<Readable> {
@@ -74,10 +99,18 @@ export class Audio {
 		return response.AudioStream as Readable;
 	}
 
-	public play(stream: Readable, volume: number = 1.0): void {
-		stream.pipe(new VolumeTransformer(volume)).pipe(new Speaker({
-			channels: 1,
-			sampleRate: 16000
-		}));
+	public play(stream: Readable, volume: number = 1.0): Promise<void> {
+		return new Promise((resolve, reject) => {
+			const speaker = new Speaker({
+				channels: 1,
+				sampleRate: 16000
+			});
+			const volumeTransformer = new VolumeTransformer(volume);
+	
+			stream.pipe(volumeTransformer).pipe(speaker);
+
+			speaker.on("close", resolve);
+			speaker.on("error", reject);
+		});
 	}
 }
