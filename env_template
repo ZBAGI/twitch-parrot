@@ -3,13 +3,31 @@ AWS_ACCESS_SECRET=xxxxxxxxxxxx
 AWS_REGION=eu-west-1
 TWITCH_CHANNEL=YOUR_TWITCH_CHANNEL
 
-# Remove or comment out following line if you wish to TTS all messages:
+# Remove or comment out following line if you wish to TTS all messages
 SAY_COMMAND=!say
+
 # Volume is in procentage where max is 200 and minimum is 1
 SAY_VOLUME=100
+
+# Default voiceId see https://docs.aws.amazon.com/polly/latest/dg/voicelist.html for list of voices
 SAY_DEFAULT_VOICE=Brian
+
+# Command which every user can use to set own voice
+SAY_COMMAND_VOICE=!voice
+
+# Remove or comment out following line if you dont want to allow people to change their voices 
+# Notice: all already written voices in 'voices.json' file will still be applied, remove file if you want to reset everyone to default voice
+SAY_ALLOW_VOICES=Brian,Emma,Amy,Ivy,Joanna,Kendra,Kimberly,Salli,Joey,Hans,Aditi,Ewa,Maja,Jacek,Jan,Lupe,Penelope,Gwyneth
+
+# Text which is used to concatenate user nickname with message
 SAY_CONCAT_TEXT=said
+
+# How often ( in seconds ) can people trigger TTS ( chat moderator ignores this limitation )
 SAY_COOLDOWN=10
+
+# How many characters are allowed in one message
 SAY_MAX_LENGTH=0
-# Remove or comment out following line if you do not want to allow mods to modify pronunciation modifiers:
+
+# Remove or comment out following line if you do not want to allow mods to modify pronunciation modifiers
+# Notice: all already written pronunciations in 'pronunciation.json' file will still be applied
 SAY_COMMAND_PRONOUNCE=!pronounce

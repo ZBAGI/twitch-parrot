@@ -55,7 +55,7 @@ export class Chat {
 
 	public command(opt: {
 		command?: string,
-		shouldTrigger: (username: string, message: string, isModerator: boolean) => boolean,
+		shouldTrigger?: (username: string, message: string, isModerator: boolean) => boolean,
 		onTrigger: (username: string, message: string, isModerator: boolean, args: string[] | undefined) => Promise<void>,
 		cooldown?: number
 	}): this {
@@ -67,7 +67,7 @@ export class Chat {
 
 			const sanitizedMessage = message.substring(opt.command?.length ?? 0).replace(/ +/g, " ").trim();
 			
-			if(!opt.shouldTrigger(username, sanitizedMessage, isModerator))
+			if(opt.shouldTrigger && !opt.shouldTrigger(username, sanitizedMessage, isModerator))
 				return;
 
 			if(!isModerator && opt.cooldown) {

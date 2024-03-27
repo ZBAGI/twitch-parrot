@@ -110,6 +110,7 @@ typings/
 .env
 
 pronunciation.json
+voices.json
 
 ### OSX ###
 *.DS_Store
