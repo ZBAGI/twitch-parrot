@@ -104,13 +104,21 @@ if(SAY_COMMAND_PRONOUNCE) {
 				return;
 			}
 
-			const msg = "Moderator "+user+" changed pronunciation of; " + pronunciation.apply(args[0]) + "; to; " + args[1];
+			const removed = args[0].toLowerCase() == args[1].toLowerCase() || args[0].toLowerCase() == "remove";
+
+			if(removed) {
+				if(!pronunciation.remove(args[1])) {
+					console.log("Moderator "+user+" failed to removed unknown pronunciation of " + args[1]);
+					return;
+				}
+			} else {
+				pronunciation.set(args[0], args[1]);
+			}
+
+			const msg = removed ? "Moderator "+user+" removed pronunciation of; " + args[1] :
+				"Moderator "+user+" changed pronunciation of; " + args[0] + "; to; " + args[1];
 			console.log(msg);
 			await audio.say(msg, SAY_DEFAULT_VOICE, SAY_VOLUME);
-			if(args[0] == args[1])
-				pronunciation.remove(args[0]);
-			else
-				pronunciation.set(args[0], args[1])
 		}
 	});
 }

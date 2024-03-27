@@ -48,12 +48,9 @@ export class Pronunciation {
 	}
 
 	public remove(key: string): boolean {
-		if (this.map.has(key)) {
-			this.map.delete(key);
-			this.save();
-			return true;
-		}
+		const result = this.map.delete(key.toLowerCase());
+		this.save();
 
-		return false;
+		return result;
 	}
 }
