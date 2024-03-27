@@ -56,7 +56,7 @@ export class Chat {
 	public command(opt: {
 		command?: string,
 		shouldTrigger: (username: string, message: string, isModerator: boolean) => boolean,
-		onTrigger: (username: string, message: string, isModerator: boolean) => Promise<void>,
+		onTrigger: (username: string, message: string, isModerator: boolean, args: string[] | undefined) => Promise<void>,
 		cooldown?: number
 	}): this {
 		const lastMessage: { [username: string]: Date } = {};
@@ -85,7 +85,8 @@ export class Chat {
 			const release = await this.commandLock.acquire();
 			try {
 				lastMessage[username] = new Date();
-				await opt.onTrigger(username, sanitizedMessage, isModerator);
+				const args = sanitizedMessage.match(/(?:[^\s"]+|"[^"]*")+/g)?.map(arg => arg.replace(/"/g, ''));
+				await opt.onTrigger(username, sanitizedMessage, isModerator, args);
 			} finally {
 				if(release)
 					release();

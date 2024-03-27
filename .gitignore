@@ -109,6 +109,7 @@ typings/
 # dotenv environment variables file
 .env
 
+pronunciation.json
 
 ### OSX ###
 *.DS_Store

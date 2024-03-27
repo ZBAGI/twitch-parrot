@@ -3,9 +3,13 @@ AWS_ACCESS_SECRET=xxxxxxxxxxxx
 AWS_REGION=eu-west-1
 TWITCH_CHANNEL=YOUR_TWITCH_CHANNEL
 
+# Remove or comment out following line if you wish to TTS all messages:
 SAY_COMMAND=!say
+# Volume is in procentage where max is 200 and minimum is 1
 SAY_VOLUME=100
 SAY_DEFAULT_VOICE=Brian
 SAY_CONCAT_TEXT=said
 SAY_COOLDOWN=10
 SAY_MAX_LENGTH=0
+# Remove or comment out following line if you do not want to allow mods to modify pronunciation modifiers:
+SAY_COMMAND_PRONOUNCE=!pronounce
