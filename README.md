@@ -28,6 +28,7 @@ You can monitor your character usage on the [AWS Billing and Cost Management, Bu
 - `SAY_CONCAT_TEXT` - Additional text used to concatenate the username and what the user wrote.
 - `SAY_COOLDOWN` - User-based cooldown, i.e., how often a user can use the say command (in seconds), 0 to disable cooldown. Note: Mods ignore cooldown.
 - `SAY_MAX_LENGTH` - What is the maximum amount of characters used in the say command, messages longer than this option will be ignored. (0 to disable limit)
+- `SAY_IGNORED_USERS` - Usernames whose messages will not trigger TTS.
 
 ## How to get AWS access key and secret
 
