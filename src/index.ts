@@ -48,6 +48,7 @@ const SAY_CONCAT_TEXT = process.env.SAY_CONCAT_TEXT || "said";
 const SAY_DEFAULT_VOICE: VoiceId = (process.env.SAY_DEFAULT_VOICE as VoiceId) ?? "Brian";
 const SAY_COOLDOWN = process.env.SAY_COOLDOWN ? Number.parseInt(process.env.SAY_COOLDOWN) : undefined;
 const SAY_MAX_LENGTH = process.env.SAY_MAX_LENGTH ? Number.parseInt(process.env.SAY_MAX_LENGTH) : undefined;
+const SAY_IGNORED_USERS = process.env.SAY_IGNORED_USERS ? process.env.SAY_IGNORED_USERS.toLowerCase().split(",") : [];
 
 if(SAY_VOLUME > 2 || SAY_VOLUME < 0)
 	throw new Error("SAY_VOLUME must be number between 200 and 0");
@@ -83,9 +84,15 @@ chat.command({
 		if(!isModerator && SAY_MAX_LENGTH) {
 			if(message.length > SAY_MAX_LENGTH) {
 				console.log(`Ignoring TTS of '${user}' due to message length (${message.length} characters).`);
-					return false;
+				return false;
 			}
 		}
+
+		if(SAY_IGNORED_USERS.includes(user.toLowerCase())) {
+			console.log(`Ignoring TTS of '${user}' due to user being ignored in config file.`);
+			return false;
+		}
+
 		return !message.startsWith("!") && !message.startsWith("/");
 	},
 	onTrigger: async (user, message, isModerator) => {
@@ -120,12 +127,12 @@ if(SAY_COMMAND_PRONOUNCE) {
 			const removed = args[0].toLowerCase() == args[1].toLowerCase() || args[0].toLowerCase() == "remove";
 
 			if(removed) {
-				if(!pronunciation.delete(args[1])) {
+				if(!pronunciation.delete(args[1].toLowerCase())) {
 					console.log("Moderator "+user+" failed to removed unknown pronunciation of " + args[1]);
 					return;
 				}
 			} else {
-				pronunciation.set(args[0], args[1]);
+				pronunciation.set(args[0].toLowerCase(), args[1]);
 			}
 
 			const msg = removed ? "Moderator "+user+" removed pronunciation of; " + args[1] :

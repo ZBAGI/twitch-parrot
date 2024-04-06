@@ -31,3 +31,6 @@ SAY_MAX_LENGTH=0
 # Remove or comment out following line if you do not want to allow mods to modify pronunciation modifiers
 # Notice: all already written pronunciations in 'pronunciation.json' file will still be applied
 SAY_COMMAND_PRONOUNCE=!pronounce
+
+# Users whose messages will not trigger TTS
+SAY_IGNORED_USERS=Nightbot,WizeBot,StreamElements
