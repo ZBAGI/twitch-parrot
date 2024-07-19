@@ -45,6 +45,7 @@ const SAY_COMMAND_VOICE = process.env.SAY_COMMAND_VOICE || "!voice";
 const SAY_ALLOW_VOICES = process.env.SAY_ALLOW_VOICES?.split(",");
 const SAY_VOLUME = process.env.SAY_VOLUME ? Number.parseInt(process.env.SAY_VOLUME)/100 : 1.0;
 const SAY_CONCAT_TEXT = process.env.SAY_CONCAT_TEXT || "said";
+const SAY_LINK = process.env.SAY_LINK;
 const SAY_DEFAULT_VOICE: VoiceId = (process.env.SAY_DEFAULT_VOICE as VoiceId) ?? "Brian";
 const SAY_COOLDOWN = process.env.SAY_COOLDOWN ? Number.parseInt(process.env.SAY_COOLDOWN) : undefined;
 const SAY_MAX_LENGTH = process.env.SAY_MAX_LENGTH ? Number.parseInt(process.env.SAY_MAX_LENGTH) : undefined;
@@ -99,6 +100,8 @@ chat.command({
 		let userSaid = `${user} ${SAY_CONCAT_TEXT}`;
 		console.log((isModerator ? "[MOD] " : "") + userSaid + " " + message);
 		
+		if(SAY_LINK)
+			message = pronunciation.urlsToDomains(message, SAY_LINK);
 		message = pronunciation.apply(message);
 		userSaid = pronunciation.apply(userSaid);
 

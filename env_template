@@ -3,6 +3,10 @@ AWS_ACCESS_SECRET=xxxxxxxxxxxx
 AWS_REGION=eu-west-1
 TWITCH_CHANNEL=YOUR_TWITCH_CHANNEL
 
+# Remove or comment out following line if you wish to pronounce whole link
+# X will contain link written in chat
+SAY_LINK=Link to X
+
 # Remove or comment out following line if you wish to TTS all messages
 SAY_COMMAND=!say
 
