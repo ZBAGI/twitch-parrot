@@ -127,12 +127,12 @@ if(SAY_COMMAND_PRONOUNCE) {
 			const removed = args[0].toLowerCase() == args[1].toLowerCase() || args[0].toLowerCase() == "remove";
 
 			if(removed) {
-				if(!pronunciation.delete(args[1].toLowerCase())) {
+				if(!pronunciation.delete(args[1])) {
 					console.log("Moderator "+user+" failed to removed unknown pronunciation of " + args[1]);
 					return;
 				}
 			} else {
-				pronunciation.set(args[0].toLowerCase(), args[1]);
+				pronunciation.set(args[0], args[1]);
 			}
 
 			const msg = removed ? "Moderator "+user+" removed pronunciation of; " + args[1] :
